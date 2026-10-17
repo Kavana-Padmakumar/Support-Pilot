@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SupportPilot — AI Support Desk</title>
+<link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=6">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="app-body light-theme">
+  <!-- Claymorphism Mesh & Floating Orbs -->
+  <div class="bg-mesh"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="app-shell">
+    <!-- 1. CLAYMORPHISM SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo-3d">
+          <img src="{{ url_for('static', filename='logo.svg') }}" alt="SupportPilot" width="36" height="36">
+        </div>
+        <div>
+          <div class="sidebar-title">SupportPilot</div>
+          <div class="sidebar-sub">AI SUPPORT DESK</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" id="sideNav">
+        <button type="button" class="nav-item active" data-panel="panel-dashboard">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span><span>Home</span>
+          <span class="nav-glow"></span>
+        </button>
+
+        <button type="button" class="nav-item" data-panel="panel-submit">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span><span>Submit Ticket</span>
+          <span class="nav-glow"></span>
+        </button>
+
+        <button type="button" class="nav-item" data-panel="panel-tickets">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.88 14 10l5.83-2.12a.5.5 0 0 0 .36-.61l-1.5-6.23a.5.5 0 0 0-.61-.36L15 5.88z"></path><path d="M9.8 15.65 13.9 14l-2.1-5.83a.5.5 0 0 0-.61-.36l-6.23 1.5a.5.5 0 0 0-.36.61l2.1 5.83a.5.5 0 0 0 .61.36l6.23-1.5z"></path></svg></span><span>Tickets</span>
+          <span class="nav-glow"></span>
+        </button>
+
+        <button type="button" class="nav-item" data-panel="panel-agents">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg></span><span>AI Agents</span>
+          <span class="nav-glow"></span>
+        </button>
+
+        <button type="button" class="nav-item" data-panel="panel-analytics">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span><span>Analytics &amp; ML</span>
+          <span class="nav-glow"></span>
+        </button>
+
+        <button type="button" class="nav-item" data-panel="panel-integrations">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"></path><path d="m4.93 10.93 1.41 1.41"></path><path d="M20 18v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2"></path><path d="M18 14a6 6 0 0 0-12 0"></path></svg></span><span>Integrations</span>
+          <span class="nav-glow"></span>
+        </button>
+
+        <button type="button" class="nav-item" data-panel="panel-account">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span><span>Account</span>
+          <span class="nav-glow"></span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-chip-v2">
+          <div class="user-avatar">
+            {% set _n = (user.full_name or user.username or 'U') %}{{ _n[0]|upper }}
+          </div>
+          <div class="user-meta">
+            <div class="user-name">{{ user.full_name or user.username }}</div>
+            <div class="user-mail">{{ user.email or '' }}</div>
+          </div>
+        </div>
+        <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-secondary w-100 mt-2 signout-btn">Sign out</a>
+      </div>
+    </aside>
+
+    <!-- 2. MAIN CLAY WRAPPER -->
+    <div class="main-wrap">
+      <header class="topbar">
+        <button type="button" class="menu-toggle d-lg-none" id="menuToggle" aria-label="Menu">☰</button>
+        <div class="topbar-title" id="topbarTitle">Home</div>
+        <div class="topbar-actions">
+          <span class="live-pill"><span class="live-dot"></span> Live</span>
+        </div>
+      </header>
+
+      <div class="main-content">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-success alert-dismissible fade show glass-alert mb-3" role="alert">
+              {{ messages[0] }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- ===================================================================
+             PANEL: HOME / DASHBOARD (Claymorphism)
+             =================================================================== -->
+        <section class="panel active" id="panel-dashboard">
+          <div class="home-banner home-banner-full dash-enter">
+            <div class="home-banner-text">
+              <div class="home-kicker">SupportPilot</div>
+              <h1 class="home-title">Hi {{ user.full_name or user.username }}</h1>
+              <p class="home-sub">Classify issues, search the knowledge base, and get a clear resolution — start with a new ticket anytime.</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-hero btn-3d" onclick="showPanel('panel-submit')">
+              + New Ticket
+            </button>
+          </div>
+
+          <!-- Top 3 Stat Cards -->
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="stat-card stat-unique card-3d dash-enter">
+                <div class="stat-icon-wrap si-blue">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.88 14 10l5.83-2.12a.5.5 0 0 0 .36-.61l-1.5-6.23a.5.5 0 0 0-.61-.36L15 5.88z"></path><path d="M9.8 15.65 13.9 14l-2.1-5.83a.5.5 0 0 0-.61-.36l-6.23 1.5a.5.5 0 0 0-.36.61l2.1 5.83a.5.5 0 0 0 .61.36l6.23-1.5z"></path></svg>
+                </div>
+                <div>
+                  <div class="stat-label">Tickets</div>
+                  <div class="stat-value" id="statTotal">{{ stats.total }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card stat-unique card-3d dash-enter delay-1">
+                <div class="stat-icon-wrap si-amber">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div>
+                  <div class="stat-label">Open</div>
+                  <div class="stat-value" id="statOpen">{{ stats.open }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card stat-unique card-3d dash-enter delay-2">
+                <div class="stat-icon-wrap si-green">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <div>
+                  <div class="stat-label">Resolved</div>
+                  <div class="stat-value" id="statResolved">{{ stats.resolved }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Home Mini-KPI Cards -->
+          <div class="row g-3 mt-2 dash-enter">
+            <div class="col-md-3">
+              <div class="card card-3d p-3 text-center h-100">
+                <div class="stat-label mb-1" style="font-size:0.75rem; color:#64748b;">AI Resolution</div>
+                <div class="stat-value" id="homeAiRate" style="font-size:1.8rem; font-weight:800; color:#4f46e5;">—</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-3d p-3 text-center h-100">
+                <div class="stat-label mb-1" style="font-size:0.75rem; color:#64748b;">KB Coverage</div>
+                <div class="stat-value" id="homeKbCoverage" style="font-size:1.8rem; font-weight:800; color:#10b981;">—</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-3d p-3 text-center h-100">
+                <div class="stat-label mb-1" style="font-size:0.75rem; color:#64748b;">Satisfaction</div>
+                <div class="stat-value" id="homeCsat" style="font-size:1.8rem; font-weight:800; color:#f59e0b;">—</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card card-3d p-3 text-center h-100">
+                <div class="stat-label mb-1" style="font-size:0.75rem; color:#64748b;">Escalated</div>
+                <div class="stat-value" id="homeEscalated" style="font-size:1.8rem; font-weight:800; color:#ef4444;">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 Distribution Charts on Home -->
+          <div class="row g-3 mt-2 dash-enter">
+            <div class="col-md-4">
+              <div class="card card-3d p-3 h-100">
+                <div class="card-title-bold mb-2" style="font-size:0.88rem;">Tickets by Category</div>
+                <div style="position:relative; height:220px;">
+                  <canvas id="homeCategoryChart"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card card-3d p-3 h-100">
+                <div class="card-title-bold mb-2" style="font-size:0.88rem;">AI Resolved vs Escalated</div>
+                <div style="position:relative; height:220px;">
+                  <canvas id="homeStatusChart"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card card-3d p-3 h-100">
+                <div class="card-title-bold mb-2" style="font-size:0.88rem;">Tickets by Priority</div>
+                <div style="position:relative; height:220px;">
+                  <canvas id="homePriorityChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             PANEL: SUBMIT TICKET & DUAL RESOLUTION
+             =================================================================== -->
+        <section class="panel" id="panel-submit">
+          <!-- Submission Form Card -->
+          <div class="card card-3d dash-enter mb-3" id="submitFormCard">
+            <div class="card-header">Submit Support Ticket — Dual Coded RAG &amp; AI Agents</div>
+            <div class="card-body">
+              <form id="ticketForm" onsubmit="return false;">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Employee Name</label>
+                    <input type="text" class="form-control form-3d" id="tEmployee" name="employee_name" value="{{ user.full_name or '' }}" placeholder="e.g. Alex Johnson">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control form-3d" id="tEmail" name="email" value="{{ user.email or '' }}" placeholder="alex@company.com">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Issue Title</label>
+                    <input type="text" class="form-control form-3d" id="tTitle" name="title" placeholder="e.g. VPN Disconnecting on Corporate WiFi">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Department</label>
+                    <select class="form-select form-3d" id="tDept" name="department">
+                      <option value="IT" selected>IT</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Sales">Sales</option>
+                      <option value="HR">HR</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Description *</label>
+                    <textarea class="form-control form-3d" id="tDesc" name="description" rows="4" required placeholder="Describe what is failing in detail..."></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Business Impact</label>
+                    <select class="form-select form-3d" id="tImpact" name="business_impact">
+                      <option value="Low">Low</option>
+                      <option value="Medium" selected>Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-3d w-100 mt-4 py-2" id="submitTicketBtn">
+                  <span class="btn-label">Submit Ticket — Run Coded RAG + AI Agent Swarm</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Dual Result Container -->
+          <div id="ticketResult" class="d-none dash-enter">
+            <!-- Back Button Bar -->
+            <div class="mb-3 d-flex align-items-center justify-content-between p-3 card card-3d">
+              <button id="dynamicBackBtn" type="button" class="btn btn-primary btn-3d rounded-pill d-inline-flex align-items-center gap-2 px-3 py-2" onclick="goBackFromAnalysis()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                <span id="dynamicBackBtnText">Back to Tickets</span>
+              </button>
+              <div class="d-flex gap-2 align-items-center">
+                <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-2" id="trStatusBadge">AI RESOLVED</span>
+                <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" onclick="resetSubmitView()">+ New Ticket</button>
+              </div>
+            </div>
+
+            <div class="row g-4">
+              <!-- Left: Grounded Coded RAG Result -->
+              <div class="col-lg-6">
+                <div class="card card-3d h-100">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>1. Coded RAG Knowledge Engine</span>
+                    <span class="badge bg-primary bg-opacity-10 text-primary" id="trConfidenceBadge">94% Match</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="text-primary fw-bold mb-1" id="trTicketId">#—</div>
+                    <h4 class="fw-bold mb-2" id="trTitle">—</h4>
+                    <p class="text-secondary small mb-3" id="trDesc">—</p>
+
+                    <div class="d-flex gap-2 mb-3">
+                      <span class="badge bg-light text-dark border" id="trCat">—</span>
+                      <span class="badge sev-high" id="trSev">—</span>
+                      <span class="badge pri-p1" id="trPri">—</span>
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3 mb-3 border">
+                      <div class="fw-bold small text-muted mb-1">🔍 TF-IDF Query</div>
+                      <div class="small text-dark fw-semibold" id="ragQuery">—</div>
+                    </div>
+
+                    <div class="fw-bold small text-muted mb-2">Matching Knowledge Base Guides:</div>
+                    <div id="retrievedDocs" class="d-flex flex-column gap-2 mb-3"></div>
+
+                    <div class="fw-bold small text-primary mb-2">Step-by-Step Resolution:</div>
+                    <div id="resolutionBody" class="p-3 bg-light rounded-3 border small text-secondary" style="line-height: 1.6;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: AI Multi-Agent Pipeline Result -->
+              <div class="col-lg-6">
+                <div class="card card-3d h-100">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>2. AI Multi-Agent Swarm Result</span>
+                    <span class="badge bg-success bg-opacity-10 text-success fw-bold" id="agentValidationStatus">AUTO_RESOLVE</span>
+                  </div>
+                  <div class="card-body">
+                    <!-- Agent 1 -->
+                    <div class="p-3 border rounded-3 bg-light mb-3">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="fw-bold small text-dark">🤖 Diagnosis Agent</span>
+                        <span class="badge bg-primary bg-opacity-10 text-primary small" id="agentDiagConf">80% Conf</span>
+                      </div>
+                      <div class="small text-secondary" id="agentDiagText">Analyzing issue category and semantic severity...</div>
+                    </div>
+
+                    <!-- Agent 2 -->
+                    <div class="p-3 border rounded-3 bg-light mb-3">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="fw-bold small text-dark">📚 Retrieval Agent</span>
+                        <span class="badge bg-info bg-opacity-10 text-info small" id="agentRetrSim">88% Similarity</span>
+                      </div>
+                      <div class="small text-secondary" id="agentRetrArticle">Semantic vector search matched standard operating guide.</div>
+                    </div>
+
+                    <!-- Agent 3 -->
+                    <div class="p-3 border rounded-3 bg-light mb-3">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="fw-bold small text-dark">⚡ Resolution &amp; Validation</span>
+                        <span class="badge bg-success bg-opacity-10 text-success small" id="agentValScore">Score: 88/100</span>
+                      </div>
+                      <div class="small text-secondary" id="agentResolutionSteps">Action plan generated.</div>
+                    </div>
+
+                    <!-- Tool Sync Status -->
+                    <div class="fw-bold small text-muted mb-2">Tool Calling &amp; Integration Sync:</div>
+                    <div class="row g-2 mb-3">
+                      <div class="col-6">
+                        <div class="p-2 border rounded-3 bg-white text-center">
+                          <div class="small text-muted">Jira Integration</div>
+                          <div class="fw-bold small text-success mt-1" id="toolJiraStatus">✓ Synced / Ready</div>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="p-2 border rounded-3 bg-white text-center">
+                          <div class="small text-muted">Email Notification</div>
+                          <div class="fw-bold small text-primary mt-1" id="toolEmailStatus">✓ Dispatched</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Return Button -->
+                    <button type="button" class="btn btn-primary btn-3d w-100 py-2 fw-bold" onclick="goBackFromAnalysis()">
+                      ✓ Done — Return to Previous Page
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             PANEL: TICKETS MANAGEMENT
+             =================================================================== -->
+        <section class="panel" id="panel-tickets">
+          <div class="card card-3d dash-enter">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span>All Tickets (<span id="ticketCountBadge">{{ stats.total }}</span> total)</span>
+              <button class="btn btn-sm btn-primary btn-3d" onclick="showPanel('panel-submit')">+ New Ticket</button>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table premium-table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Ticket</th>
+                      <th>Category</th>
+                      <th>Priority</th>
+                      <th>Status</th>
+                      <th class="text-end">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ticketsBody">
+                    {% for t in tickets %}
+                    <tr class="ticket-row">
+                      <td>
+                        <div class="fw-bold text-primary">#{{ t.ticket_id }} {{ t.title or (t.description[:40] if t.description else 'Ticket') }}</div>
+                        <div class="small text-muted">{{ t.employee_name or 'Employee' }} • {{ t.department or 'IT' }}</div>
+                      </td>
+                      <td><span class="badge bg-light text-dark border">{{ t.category or 'General' }}</span></td>
+                      <td>
+                        {% set p = (t.priority or 'P3')|upper %}
+                        <span class="badge {% if p in ['P1', 'CRITICAL'] %}pri-p1{% elif p in ['P2', 'HIGH'] %}pri-p2{% elif p in ['P3', 'MEDIUM'] %}pri-p3{% else %}pri-p4{% endif %}">
+                          {{ t.priority or 'P3' }}
+                        </span>
+                      </td>
+                      <td>
+                        {% if t.status == 'Resolved' %}
+                        <span class="badge bg-success bg-opacity-10 text-success">RESOLVED</span>
+                        {% elif t.escalation_reason %}
+                        <span class="badge bg-danger bg-opacity-10 text-danger">ESCALATED</span>
+                        {% else %}
+                        <span class="badge bg-primary bg-opacity-10 text-primary">{{ (t.status or 'OPEN')|upper }}</span>
+                        {% endif %}
+                      </td>
+                      <td class="text-end">
+                        <button type="button" class="btn btn-sm btn-outline-primary btn-3d rounded-pill px-3 py-1" onclick="openTicketAnalysis('{{ t.ticket_id }}')">
+                          View →
+                        </button>
+                      </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                      <td colspan="5" class="text-center py-4 text-muted">No tickets registered yet.</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             PANEL: AI AGENTS ARCHITECTURE
+             =================================================================== -->
+        <section class="panel" id="panel-agents">
+          <div class="card card-3d dash-enter mb-3">
+            <div class="card-header">Multi-Agent Resolution Architecture</div>
+            <div class="card-body">
+              <p class="text-secondary small mb-4">SupportPilot runs specialized cooperative agents orchestrated with LLM routing, enterprise TF-IDF / vector knowledge retrieval, automatic diagnosis, and live Jira/Email tool calling.</p>
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <div class="p-3 border rounded-3 bg-light h-100">
+                    <div class="fw-bold text-primary mb-1">1. Router Agent</div>
+                    <p class="small text-muted mb-0">Analyzes issue semantics, extracts category keywords, detects urgency and routes to appropriate resolver agent.</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="p-3 border rounded-3 bg-light h-100">
+                    <div class="fw-bold text-success mb-1">2. Retrieval Agent</div>
+                    <p class="small text-muted mb-0">Performs TF-IDF and cosine similarity search across enterprise standard operating procedures.</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="p-3 border rounded-3 bg-light h-100">
+                    <div class="fw-bold text-purple mb-1">3. Diagnosis Agent</div>
+                    <p class="small text-muted mb-0">Synthesizes contextual knowledge into concrete, numbered verification steps with citations.</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="p-3 border rounded-3 bg-light h-100">
+                    <div class="fw-bold text-danger mb-1">4. Escalation Agent</div>
+                    <p class="small text-muted mb-0">Evaluates escalation criteria; triggers Jira issue creation &amp; SMTP email notifications.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             PANEL: FULL ANALYTICS DASHBOARD & ESCALATIONS
+             =================================================================== -->
+        <section class="panel" id="panel-analytics">
+          <!-- HERO BANNER WITH BLINKING ROBOT -->
+          <div class="anl-hero dash-enter mb-4">
+            <div class="anl-hero-text">
+              <div class="anl-hero-kicker">AI Support Dashboard</div>
+              <h2 class="anl-hero-title">SupportPilot<br><span>Analytics Dashboard</span></h2>
+              <p class="anl-hero-sub">AI-powered support performance &mdash; real-time KPIs, daily ticket trends and escalation monitoring.</p>
+            </div>
+            <div class="anl-hero-art">
+              <div class="anl-robot-card">
+                <div class="anl-robot-face">
+                  <div class="anl-robot-eyes"><span></span><span></span></div>
+                  <div class="anl-robot-mouth"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TOP 4 KPI CARDS -->
+          <div class="row g-3 mb-4">
+            <div class="col-xl-3 col-sm-6">
+              <div class="anl-kpi-card dash-enter">
+                <div class="anl-kpi-icon anl-kpi-blue">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M15 5.88 14 10l5.83-2.12a.5.5 0 0 0 .36-.61l-1.5-6.23a.5.5 0 0 0-.61-.36L15 5.88z"/><path d="M9.8 15.65 13.9 14l-2.1-5.83a.5.5 0 0 0-.61-.36l-6.23 1.5a.5.5 0 0 0-.36.61l2.1 5.83a.5.5 0 0 0 .61.36l6.23-1.5z"/></svg>
+                </div>
+                <div class="anl-kpi-label">TOTAL TICKETS</div>
+                <div class="anl-kpi-value" id="kpiTotal">—</div>
+                <div class="anl-kpi-sub">All tickets received</div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+              <div class="anl-kpi-card dash-enter delay-1">
+                <div class="anl-kpi-icon anl-kpi-blue">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+                </div>
+                <div class="anl-kpi-label">AI RESOLUTION</div>
+                <div class="anl-kpi-value" id="kpiAiRate">—</div>
+                <div class="anl-kpi-sub">Automatically resolved</div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+              <div class="anl-kpi-card dash-enter delay-2">
+                <div class="anl-kpi-icon anl-kpi-blue">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div class="anl-kpi-label">CUSTOMER SATISFACTION</div>
+                <div class="anl-kpi-value" id="kpiCSAT">—</div>
+                <div class="anl-kpi-sub">Average customer rating</div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+              <div class="anl-kpi-card dash-enter delay-3">
+                <div class="anl-kpi-icon anl-kpi-blue">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div class="anl-kpi-label">SYSTEM UPTIME</div>
+                <div class="anl-kpi-value" id="kpiUptime">99.7%</div>
+                <div class="anl-kpi-sub">Current application session</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DUAL LINE CHART + SYSTEM METRICS -->
+          <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+              <div class="card anl-chart-card">
+                <div class="anl-chart-header">
+                  <div>
+                    <div class="anl-chart-title">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                      Ticket Volume &amp; Resolution
+                    </div>
+                    <div class="anl-chart-sub">Tickets received and resolved from Monday to Sunday</div>
+                  </div>
+                  <div class="anl-chart-legend">
+                    <span class="anl-legend-dot" style="background:#3b82f6;"></span> Tickets Received &nbsp;
+                    <span class="anl-legend-dot" style="background:#10b981;"></span> Tickets Resolved
+                  </div>
+                </div>
+                <div style="position:relative; height:280px; padding: 0.75rem 1.25rem 1.25rem;">
+                  <canvas id="chartDailyTrend"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card anl-chart-card h-100">
+                <div class="anl-chart-header">
+                  <div class="anl-chart-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    System Optimization Metrics
+                  </div>
+                </div>
+                <div style="padding: 0.5rem 1.25rem 1.25rem;">
+                  <div class="anl-metric-row">
+                    <div class="anl-metric-label"><span>Classification Accuracy</span> <span class="anl-metric-val" id="kpiAccuracy">—</span></div>
+                    <div class="anl-metric-bar"><div class="anl-metric-fill anl-fill-blue" id="barAccuracy" style="width:0%"></div></div>
+                  </div>
+                  <div class="anl-metric-row">
+                    <div class="anl-metric-label"><span>Resolution Success Rate</span> <span class="anl-metric-val" id="kpiSuccess">—</span></div>
+                    <div class="anl-metric-bar"><div class="anl-metric-fill anl-fill-green" id="barSuccess" style="width:0%"></div></div>
+                  </div>
+                  <div class="anl-metric-row">
+                    <div class="anl-metric-label"><span>Knowledge Base Coverage</span> <span class="anl-metric-val" id="kpiKb">—</span></div>
+                    <div class="anl-metric-bar"><div class="anl-metric-fill anl-fill-amber" id="barKb" style="width:0%"></div></div>
+                  </div>
+                  <div class="anl-metric-row">
+                    <div class="anl-metric-label"><span>System Uptime</span> <span class="anl-metric-val">99.7%</span></div>
+                    <div class="anl-metric-bar"><div class="anl-metric-fill anl-fill-purple" style="width:99.7%"></div></div>
+                  </div>
+                  <div class="anl-metric-row">
+                    <div class="anl-metric-label"><span>Avg. Response Gen Time</span> <span class="anl-metric-val" id="kpiAiResponseTime">—</span></div>
+                    <div class="anl-metric-bar"><div class="anl-metric-fill anl-fill-cyan" id="barResponseTime" style="width:0%"></div></div>
+                  </div>
+                  <div class="anl-metric-row">
+                    <div class="anl-metric-label"><span>User Satisfaction Score</span> <span class="anl-metric-val" id="kpiCSAT2">—</span></div>
+                    <div class="anl-metric-bar"><div class="anl-metric-fill anl-fill-green" id="barCSAT" style="width:0%"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 DISTRIBUTION CHARTS ROW -->
+          <div class="row g-4 mb-4">
+            <div class="col-lg-4">
+              <div class="card anl-chart-card">
+                <div class="anl-chart-header"><div class="anl-chart-title">Tickets by Category</div></div>
+                <div style="position:relative; height:220px; padding: 0.5rem 1rem 1rem;"><canvas id="chartCategory"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card anl-chart-card">
+                <div class="anl-chart-header"><div class="anl-chart-title">AI Resolution vs Escalation</div></div>
+                <div style="position:relative; height:220px; padding: 0.5rem 1rem 1rem;"><canvas id="chartStatus"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card anl-chart-card">
+                <div class="anl-chart-header"><div class="anl-chart-title">Tickets by Priority</div></div>
+                <div style="position:relative; height:220px; padding: 0.5rem 1rem 1rem;"><canvas id="chartPriority"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ESCALATION MONITOR TABLE -->
+          <div class="card anl-chart-card mb-4 dash-enter">
+            <div class="anl-chart-header">
+              <div class="anl-chart-title" style="color:#ef4444;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Automatic Escalation Engine
+              </div>
+              <span class="anl-badge-red" id="escalationCountBadge">0 Escalated</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table premium-table mb-0">
+                <thead>
+                  <tr>
+                    <th>Ticket ID</th><th>Category</th><th>Priority</th>
+                    <th>AI Confidence</th><th>Escalation Reason</th>
+                    <th>Human Req.</th><th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="escalationTableBody">
+                  <tr><td colspan="7" class="text-center text-muted py-4">Loading escalation data…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- HUMAN INTERVENTION MONITOR -->
+          <div class="mb-4">
+            <h5 style="font-weight:800; margin-bottom:0.75rem;">👨‍💻 Human Intervention Monitor</h5>
+            <div id="humanInterventionContainer">
+              <div class="alert alert-info border-0 rounded-3">No critical escalations currently requiring human intervention.</div>
+            </div>
+          </div>
+
+          <!-- AI CLASSIFIER EVALUATION -->
+          <div class="card anl-chart-card p-4 dash-enter mb-4">
+            <div class="anl-chart-title mb-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              AI Classifier Model Testing &amp; Evaluation
+            </div>
+            <div class="row g-4 text-center">
+              <div class="col-6 col-md-3">
+                <div class="anl-ml-val" id="mlAccuracy">—</div>
+                <div class="anl-ml-label">Accuracy</div>
+              </div>
+              <div class="col-6 col-md-3">
+                <div class="anl-ml-val" style="color:#10b981;" id="mlPrecision">—</div>
+                <div class="anl-ml-label">Precision</div>
+              </div>
+              <div class="col-6 col-md-3">
+                <div class="anl-ml-val" style="color:#f59e0b;" id="mlRecall">—</div>
+                <div class="anl-ml-label">Recall</div>
+              </div>
+              <div class="col-6 col-md-3">
+                <div class="anl-ml-val" style="color:#06b6d4;" id="mlF1">—</div>
+                <div class="anl-ml-label">F1 Score</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             PANEL: INTEGRATIONS
+             =================================================================== -->
+        <section class="panel" id="panel-integrations">
+          <div class="card card-3d dash-enter">
+            <div class="card-header">Enterprise Integrations &amp; Tools</div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <div class="p-3 border rounded-3 bg-white shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6 class="fw-bold mb-0">Atlassian Jira</h6>
+                      <span class="badge bg-success bg-opacity-10 text-success">CONNECTED</span>
+                    </div>
+                    <p class="small text-muted mb-2">Syncs escalated tickets directly to Jira Scrum Board.</p>
+                    <div class="small fw-semibold text-secondary">URL: https://agourav.atlassian.net</div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="p-3 border rounded-3 bg-white shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6 class="fw-bold mb-0">Gmail SMTP</h6>
+                      <span class="badge bg-success bg-opacity-10 text-success">ACTIVE</span>
+                    </div>
+                    <p class="small text-muted mb-2">Automated resolution email dispatch and notification routing.</p>
+                    <div class="small fw-semibold text-secondary">Host: smtp.gmail.com:587</div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="p-3 border rounded-3 bg-white shadow-sm">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <h6 class="fw-bold mb-0">Enterprise KB</h6>
+                      <span class="badge bg-success bg-opacity-10 text-success">ONLINE</span>
+                    </div>
+                    <p class="small text-muted mb-2">TF-IDF &amp; Cosine similarity corporate troubleshooting articles.</p>
+                    <div class="small fw-semibold text-secondary">10 Active Documents</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ===================================================================
+             PANEL: SETTINGS / ACCOUNT
+             =================================================================== -->
+        <section class="panel" id="panel-account">
+          <div class="account-hero dash-enter">
+            <div class="account-avatar-lg">
+              {% set _n = (user.full_name or user.username or 'U') %}{{ _n[0]|upper }}
+            </div>
+            <div>
+              <div class="account-name">{{ user.full_name or user.username }}</div>
+              <div class="account-email">{{ user.email or 'N/A' }}</div>
+              <div class="account-badges">
+                <span class="ab-pill ab-provider">Role: {{ user.role or 'Employee' }}</span>
+                <span class="ab-pill ab-muted">User ID: @{{ user.username }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-3d dash-enter">
+            <div class="card-header">Account Information</div>
+            <div class="card-body">
+              <div class="profile-grid mb-3">
+                <div class="pg-item"><div class="pg-label">Username</div><div class="pg-val">{{ user.username }}</div></div>
+                <div class="pg-item"><div class="pg-label">Full Name</div><div class="pg-val">{{ user.full_name or user.username }}</div></div>
+                <div class="pg-item"><div class="pg-label">Email</div><div class="pg-val">{{ user.email or 'N/A' }}</div></div>
+                <div class="pg-item"><div class="pg-label">Authentication</div><div class="pg-val">{{ user.auth_provider or 'Password' }}</div></div>
+              </div>
+              <a href="{{ url_for('logout') }}" class="btn btn-danger btn-3d">Sign Out</a>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ── PANEL NAVIGATION & ROUTING ──────────────────────────────────
+    const titles = {
+      'panel-dashboard': 'Home Dashboard',
+      'panel-submit': 'Submit Ticket & Resolution',
+      'panel-tickets': 'Tickets Management',
+      'panel-agents': 'Multi-Agent Architecture',
+      'panel-analytics': 'Analytics & Optimization',
+      'panel-integrations': 'Enterprise Integrations',
+      'panel-account': 'Settings & Account'
+    };
+
+    let activePanelId = 'panel-dashboard';
+    let previousPanelId = 'panel-dashboard';
+
+    function showPanel(id) {
+      if (activePanelId !== id) {
+        previousPanelId = activePanelId;
+        activePanelId = id;
+      }
+
+      document.querySelectorAll('.panel').forEach(p => {
+        p.classList.remove('active');
+        p.style.animation = '';
+      });
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+      const panel = document.getElementById(id);
+      if (panel) {
+        panel.classList.add('active');
+        void panel.offsetWidth;
+        panel.style.animation = 'panelIn 0.35s cubic-bezier(0.22,1,0.36,1) forwards';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      document.querySelectorAll('.nav-item[data-panel="'+id+'"]').forEach(n => n.classList.add('active'));
+      const titleEl = document.getElementById('topbarTitle');
+      if (titleEl) titleEl.textContent = titles[id] || 'Home';
+
+      document.getElementById('sidebar')?.classList.remove('open');
+      history.replaceState(null, '', '#' + id.replace('panel-', ''));
+
+      if (id === 'panel-dashboard') {
+        loadHomeCharts();
+      } else if (id === 'panel-analytics') {
+        loadAnalyticsData();
+      }
+    }
+
+    document.querySelectorAll('.nav-item[data-panel]').forEach(btn => {
+      btn.addEventListener('click', () => showPanel(btn.getAttribute('data-panel')));
+    });
+
+    document.getElementById('menuToggle')?.addEventListener('click', () => {
+      document.getElementById('sidebar')?.classList.toggle('open');
+    });
+
+    const hash = (location.hash || '').replace('#', '');
+    const map = {
+      dashboard: 'panel-dashboard',
+      submit: 'panel-submit',
+      resolution: 'panel-submit',
+      tickets: 'panel-tickets',
+      agents: 'panel-agents',
+      analytics: 'panel-analytics',
+      integrations: 'panel-integrations',
+      account: 'panel-account',
+      settings: 'panel-account'
+    };
+    if (hash && map[hash.split('&')[0]]) {
+      showPanel(map[hash.split('&')[0]]);
+    } else {
+      showPanel('panel-dashboard');
+      loadHomeCharts();
+    }
+
+
+    // ── HOME DASHBOARD CHARTS ──────────────────────────────────────
+    let homeCatChart = null, homeStatusChrt = null, homePrioChrt = null;
+
+    async function loadHomeCharts() {
+      try {
+        const res = await fetch('/api/analytics', { credentials: 'same-origin' });
+        if (!res.ok) return;
+        const data = await res.json();
+        const m = data.metrics || {};
+        const charts = data.charts || {};
+
+        document.getElementById('homeAiRate').textContent = (m.ai_resolution_rate || 0) + '%';
+        document.getElementById('homeKbCoverage').textContent = (m.kb_coverage || 0) + '%';
+        document.getElementById('homeCsat').textContent = (m.customer_satisfaction || 0).toFixed(1) + '/5';
+        document.getElementById('homeEscalated').textContent = m.escalated || 0;
+
+        if (typeof Chart === 'undefined') return;
+
+        const OPTS = {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
+        };
+
+        const catCtx = document.getElementById('homeCategoryChart');
+        if (catCtx) {
+          if (homeCatChart) homeCatChart.destroy();
+          const cats = charts.categories || [];
+          homeCatChart = new Chart(catCtx, {
+            type: 'bar',
+            data: {
+              labels: cats.length ? cats.map(c => c.category) : ['No Data'],
+              datasets: [{
+                label: 'Tickets',
+                data: cats.length ? cats.map(c => c.count) : [0],
+                backgroundColor: ['#6366f1','#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6'],
+                borderRadius: 8
+              }]
+            },
+            options: { ...OPTS,
+              scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1, color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.12)' } },
+                x: { ticks: { color: '#64748b' }, grid: { display: false } }
+              }
+            }
+          });
+        }
+
+        const stCtx = document.getElementById('homeStatusChart');
+        if (stCtx) {
+          if (homeStatusChrt) homeStatusChrt.destroy();
+          const st = charts.statuses || [];
+          homeStatusChrt = new Chart(stCtx, {
+            type: 'doughnut',
+            data: {
+              labels: st.length ? st.map(s => s.status) : ['No Data'],
+              datasets: [{
+                data: st.length ? st.map(s => s.count) : [1],
+                backgroundColor: ['#10b981','#ef4444','#f59e0b','#3b82f6'],
+                borderWidth: 0
+              }]
+            },
+            options: { responsive: true, maintainAspectRatio: false,
+              plugins: { legend: { position: 'bottom', labels: { padding: 8, font: { size: 11 } } } }
+            }
+          });
+        }
+
+        const prCtx = document.getElementById('homePriorityChart');
+        if (prCtx) {
+          if (homePrioChrt) homePrioChrt.destroy();
+          const pr = charts.priorities || [];
+          homePrioChrt = new Chart(prCtx, {
+            type: 'bar',
+            data: {
+              labels: pr.length ? pr.map(p => p.priority) : ['No Data'],
+              datasets: [{
+                label: 'Tickets',
+                data: pr.length ? pr.map(p => p.count) : [0],
+                backgroundColor: ['#94a3b8','#3b82f6','#f59e0b','#ef4444','#10b981'],
+                borderRadius: 8
+              }]
+            },
+            options: { ...OPTS,
+              scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1, color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.12)' } },
+                x: { ticks: { color: '#64748b' }, grid: { display: false } }
+              }
+            }
+          });
+        }
+      } catch (e) {
+        console.error('Home charts error:', e);
+      }
+    }
+
+
+    // ── TICKET SUBMISSION & DUAL RESOLUTION FLOW ───────────────────
+    document.getElementById('submitTicketBtn')?.addEventListener('click', async () => {
+      const description = document.getElementById('tDesc')?.value.trim();
+      if (!description) { alert('Please describe the issue.'); return; }
+
+      const btn = document.getElementById('submitTicketBtn');
+      const label = btn.querySelector('.btn-label');
+      btn.disabled = true;
+      if (label) label.textContent = 'Processing with Coded RAG + Multi-Agent Swarm...';
+
+      const body = {
+        employee_name: document.getElementById('tEmployee')?.value || '',
+        email: document.getElementById('tEmail')?.value || '',
+        title: document.getElementById('tTitle')?.value || '',
+        department: document.getElementById('tDept')?.value || 'IT',
+        description,
+        business_impact: document.getElementById('tImpact')?.value || 'Medium',
+        run_rag: true
+      };
+
+      try {
+        const res = await fetch('/api/ticket', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Submit failed');
+        showTicketResult(data);
+      } catch (e) {
+        alert('Error: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        if (label) label.textContent = 'Submit Ticket — Run Coded RAG + AI Agent Swarm';
+      }
+    });
+
+    function showTicketResult(data) {
+      const box = document.getElementById('ticketResult');
+      const formCard = document.getElementById('submitFormCard');
+      if (!box) return;
+
+      box.classList.remove('d-none');
+      if (formCard) formCard.classList.add('d-none');
+      box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // 1. Coded RAG
+      const rag = data.rag || {};
+      const a = rag.analysis || {};
+      const r = rag.resolution || {};
+      const docs = rag.retrieved_documents || [];
+
+      document.getElementById('trTicketId').textContent = '#' + (data.ticket_id || '—');
+      document.getElementById('trTitle').textContent = data.title || (data.description || '').slice(0, 50) || 'Support Ticket';
+      document.getElementById('trDesc').textContent = data.description || '—';
+      document.getElementById('trCat').textContent = data.category || 'IT';
+      document.getElementById('trSev').textContent = data.severity || 'Medium';
+      document.getElementById('trPri').textContent = data.priority || 'P2';
+      document.getElementById('trStatusBadge').textContent = r.status || data.status || 'Resolved';
+
+      document.getElementById('ragQuery').textContent = a.query || data.title || data.description || '—';
+      document.getElementById('trConfidenceBadge').textContent = Math.round((data.confidence || 0.94) * 100) + '% match';
+
+      const docsEl = document.getElementById('retrievedDocs');
+      if (docsEl) {
+        if (docs.length === 0) {
+          docsEl.innerHTML = '<div class="small text-muted">No specific knowledge base article matched. General troubleshooting applied.</div>';
+        } else {
+          docsEl.innerHTML = docs.map(d => `
+            <div class="p-2 border rounded-3 bg-white">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold small text-dark">${d.title || 'Troubleshooting Guide'}</span>
+                <span class="badge bg-primary bg-opacity-10 text-primary small">${Math.round((d.similarity || 0.85) * 100)}% match</span>
+              </div>
+              <div class="small text-muted mt-1">${(d.content || d.snippet || '').slice(0, 110)}...</div>
+            </div>
+          `).join('');
+        }
+      }
+
+      const resBody = document.getElementById('resolutionBody');
+      if (resBody) {
+        let steps = r.steps || [];
+        if (steps.length === 0 && r.full_text) {
+          resBody.innerHTML = `<p class="mb-0">${r.full_text}</p>`;
+        } else if (steps.length > 0) {
+          resBody.innerHTML = `<ol class="ps-3 mb-0">${steps.map(s => `<li class="mb-1">${s}</li>`).join('')}</ol>`;
+        } else {
+          resBody.innerHTML = '<p class="mb-0">Resolution verified by AI Agent. Issue marked for auto-resolution.</p>';
+        }
+      }
+
+      // 2. Multi-Agent
+      const multi = data.multi_agent || {};
+      const diag = multi.diagnosis || {};
+      const retr = multi.retrieval || {};
+      const resol = multi.resolution || {};
+      const valid = multi.validation || {};
+
+      document.getElementById('agentDiagConf').textContent = Math.round((diag.confidence || 0.85) * 100) + '% Conf';
+      document.getElementById('agentDiagText').textContent = diag.diagnosis || `Ticket classified under category: ${data.category || 'IT'}`;
+
+      document.getElementById('agentRetrSim').textContent = Math.round((retr.similarity || 0.88) * 100) + '% Similarity';
+      document.getElementById('agentRetrArticle').textContent = retr.article ? `${retr.article.title} — ${retr.article.content.slice(0, 100)}...` : 'Semantic enterprise knowledge match retrieved.';
+
+      document.getElementById('agentValScore').textContent = `Score: ${valid.confidence || 88}/100`;
+      document.getElementById('agentValidationStatus').textContent = valid.status || 'AUTO_RESOLVE';
+      document.getElementById('agentValidationStatus').className = (valid.status === 'ESCALATE') ? 'badge bg-danger bg-opacity-10 text-danger fw-bold' : 'badge bg-success bg-opacity-10 text-success fw-bold';
+
+      if (resol.steps && resol.steps.length) {
+        document.getElementById('agentResolutionSteps').innerHTML = `<ul class="ps-3 mb-0">${resol.steps.map(s => `<li class="mb-1">${s}</li>`).join('')}</ul>`;
+      } else {
+        document.getElementById('agentResolutionSteps').textContent = resol.response || 'Action plan generated and verified by Multi-Agent resolution team.';
+      }
+
+      document.getElementById('toolJiraStatus').textContent = (valid.status === 'ESCALATE') ? '⚠ Escalated → Jira Ticket Created' : '✓ Synced / Auto-resolved';
+      document.getElementById('toolEmailStatus').textContent = '✓ Notification Sent to ' + (data.email || 'Employee');
+    }
+
+    function resetSubmitView() {
+      const form = document.getElementById('ticketForm');
+      if (form) form.reset();
+      const result = document.getElementById('ticketResult');
+      if (result) result.classList.add('d-none');
+      const formCard = document.getElementById('submitFormCard');
+      if (formCard) formCard.classList.remove('d-none');
+    }
+
+    function goBackFromAnalysis() {
+      resetSubmitView();
+      if (previousPanelId && previousPanelId !== 'panel-submit') {
+        showPanel(previousPanelId);
+      } else {
+        showPanel('panel-tickets');
+      }
+    }
+
+    async function openTicketAnalysis(ticketId) {
+      try {
+        previousPanelId = activePanelId;
+        const res = await fetch('/api/ticket/' + ticketId, { credentials: 'same-origin' });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Ticket not found');
+
+        let rag = data.rag;
+        if (!rag || !rag.resolution) {
+          const rr = await fetch('/api/rag', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({
+              title: data.title || '',
+              description: data.description || '',
+              business_impact: 'Medium',
+              id: data.ticket_id
+            })
+          });
+          rag = await rr.json();
+        }
+
+        showPanel('panel-submit');
+        const backText = document.getElementById('dynamicBackBtnText');
+        if (backText) {
+          backText.textContent = previousPanelId === 'panel-tickets' ? 'Back to Tickets' : 'Back to Dashboard';
+        }
+
+        showTicketResult({
+          ticket_id: data.ticket_id,
+          title: data.title,
+          description: data.description,
+          category: data.category || 'IT',
+          confidence: data.confidence || 0.92,
+          severity: data.severity || 'Medium',
+          priority: data.priority || 'P2',
+          status: data.status || 'Resolved',
+          email: data.email,
+          rag: rag,
+          multi_agent: data.multi_agent
+        });
+      } catch (e) {
+        alert('Could not open ticket analysis: ' + e.message);
+      }
+    }
+
+
+    // ── FULL ANALYTICS DASHBOARD JS ────────────────────────────────
+    let catChart = null, statusChart = null, prioChart = null, dailyChart = null;
+
+    function setBar(barId, pct) {
+      const el = document.getElementById(barId);
+      if (el) {
+        setTimeout(() => { el.style.width = Math.min(pct, 100).toFixed(1) + '%'; }, 120);
+      }
+    }
+    function setText(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    }
+
+    async function loadAnalyticsData() {
+      try {
+        const res = await fetch('/api/analytics', { credentials: 'same-origin' });
+        if (!res.ok) return;
+        const data = await res.json();
+        const m = data.metrics || {};
+
+        // Top 4 KPI cards
+        setText('kpiTotal',  m.total_tickets || 0);
+        setText('kpiAiRate', (m.ai_resolution_rate || 0) + '%');
+        setText('kpiCSAT',   (m.customer_satisfaction  || 0).toFixed(1) + '/5');
+        setText('kpiUptime', (m.system_uptime || 99.7) + '%');
+
+        // System Optimization sidebar
+        const acc  = m.classification_accuracy   || 0;
+        const succ = m.resolution_success_rate   || 0;
+        const kb   = m.kb_coverage               || 0;
+        const rt   = m.avg_ai_response_time      || 0;
+        const csat = m.customer_satisfaction     || 0;
+
+        setText('kpiAccuracy',      acc  + '%');
+        setText('kpiSuccess',       succ + '%');
+        setText('kpiKb',            kb   + '%');
+        setText('kpiAiResponseTime', rt.toFixed(2) + ' sec');
+        setText('kpiCSAT2',         csat.toFixed(1) + '/5');
+
+        // Animate progress bars
+        setBar('barAccuracy',     acc);
+        setBar('barSuccess',      succ);
+        setBar('barKb',           kb);
+        setBar('barResponseTime', Math.min(rt * 20, 100));
+        setBar('barCSAT',         (csat / 5) * 100);
+
+        // Render all charts
+        renderAnalyticsCharts(data.charts || {});
+
+      } catch (e) {
+        console.error('Analytics metrics error:', e);
+      }
+
+      // Escalations table & alerts
+      try {
+        const escRes = await fetch('/api/analytics/escalations', { credentials: 'same-origin' });
+        if (escRes.ok) {
+          const escData = await escRes.json();
+          renderEscalationTable(escData.escalations || []);
+        }
+      } catch (e) { console.error('Escalations error:', e); }
+
+      // ML classifier metrics
+      try {
+        const mlRes = await fetch('/api/analytics/classifier-test', { credentials: 'same-origin' });
+        if (mlRes.ok) {
+          const mlData = await mlRes.json();
+          setText('mlAccuracy',  (mlData.accuracy  || 0) + '%');
+          setText('mlPrecision', (mlData.precision || 0) + '%');
+          setText('mlRecall',    (mlData.recall    || 0) + '%');
+          setText('mlF1',        (mlData.f1_score  || 0) + '%');
+        }
+      } catch (e) { console.error('ML eval error:', e); }
+    }
+
+    function renderAnalyticsCharts(charts) {
+      if (typeof Chart === 'undefined') return;
+
+      const CHART_OPTS_BASE = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } }
+      };
+
+      // ── DAILY TREND (smooth area line chart) ──
+      const ctxTrend = document.getElementById('chartDailyTrend');
+      if (ctxTrend) {
+        if (dailyChart) dailyChart.destroy();
+        const dt = charts.daily_trend || {};
+        const labels   = dt.labels   || ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+        const received = dt.received || [0,0,0,0,0,0,0];
+        const resolved = dt.resolved || [0,0,0,0,0,0,0];
+        dailyChart = new Chart(ctxTrend, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [
+              {
+                label: 'Tickets Received',
+                data: received,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59,130,246,0.12)',
+                fill: true,
+                tension: 0.45,
+                borderWidth: 2.5,
+                pointBackgroundColor: '#3b82f6',
+                pointRadius: 4,
+                pointHoverRadius: 7
+              },
+              {
+                label: 'Tickets Resolved',
+                data: resolved,
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16,185,129,0.10)',
+                fill: true,
+                tension: 0.45,
+                borderWidth: 2.5,
+                pointBackgroundColor: '#10b981',
+                pointRadius: 4,
+                pointHoverRadius: 7
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: '#fff',
+                titleColor: '#1e293b',
+                bodyColor: '#475569',
+                borderColor: '#e2e8f0',
+                borderWidth: 1,
+                padding: 10,
+                callbacks: {
+                  label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}`
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1, color: '#94a3b8', font: { size: 11 } },
+                grid: { color: 'rgba(148,163,184,0.15)' }
+              },
+              x: {
+                ticks: { color: '#94a3b8', font: { size: 11 } },
+                grid: { display: false }
+              }
+            }
+          }
+        });
+      }
+
+      // ── CATEGORY BAR ──
+      const ctxCat = document.getElementById('chartCategory');
+      if (ctxCat) {
+        if (catChart) catChart.destroy();
+        const cats = charts.categories || [];
+        catChart = new Chart(ctxCat, {
+          type: 'bar',
+          data: {
+            labels: cats.length ? cats.map(c => c.category) : ['No Data'],
+            datasets: [{
+              label: 'Tickets',
+              data: cats.length ? cats.map(c => c.count) : [0],
+              backgroundColor: '#4f46e5',
+              borderRadius: 8
+            }]
+          },
+          options: { ...CHART_OPTS_BASE,
+            scales: {
+              y: { beginAtZero: true, ticks: { stepSize: 1, color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.15)' } },
+              x: { ticks: { color: '#64748b' }, grid: { display: false } }
+            }
+          }
+        });
+      }
+
+      // ── STATUS DOUGHNUT ──
+      const ctxStatus = document.getElementById('chartStatus');
+      if (ctxStatus) {
+        if (statusChart) statusChart.destroy();
+        const st = charts.statuses || [];
+        statusChart = new Chart(ctxStatus, {
+          type: 'doughnut',
+          data: {
+            labels: st.length ? st.map(s => s.status) : ['No Data'],
+            datasets: [{
+              data: st.length ? st.map(s => s.count) : [1],
+              backgroundColor: ['#10b981','#ef4444','#f59e0b','#3b82f6'],
+              borderWidth: 0
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { padding: 10, font: { size: 11 } } } }
+          }
+        });
+      }
+
+      // ── PRIORITY BAR ──
+      const ctxPrio = document.getElementById('chartPriority');
+      if (ctxPrio) {
+        if (prioChart) prioChart.destroy();
+        const pr = charts.priorities || [];
+        prioChart = new Chart(ctxPrio, {
+          type: 'bar',
+          data: {
+            labels: pr.length ? pr.map(p => p.priority) : ['No Data'],
+            datasets: [{
+              label: 'Tickets',
+              data: pr.length ? pr.map(p => p.count) : [0],
+              backgroundColor: ['#94a3b8','#3b82f6','#f59e0b','#ef4444','#10b981'],
+              borderRadius: 8
+            }]
+          },
+          options: { ...CHART_OPTS_BASE,
+            scales: {
+              y: { beginAtZero: true, ticks: { stepSize: 1, color: '#94a3b8' }, grid: { color: 'rgba(148,163,184,0.15)' } },
+              x: { ticks: { color: '#64748b' }, grid: { display: false } }
+            }
+          }
+        });
+      }
+    }
+
+    function renderEscalationTable(escalations) {
+      const tbody = document.getElementById('escalationTableBody');
+      const badge = document.getElementById('escalationCountBadge');
+      const alertsContainer = document.getElementById('humanInterventionContainer');
+
+      if (badge) badge.textContent = `${escalations.length} Escalated`;
+      if (!tbody) return;
+
+      if (escalations.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No escalated tickets found. Standard AI automated resolution operating smoothly.</td></tr>`;
+        if (alertsContainer) alertsContainer.innerHTML = `<div class="alert alert-success border-0 rounded-3">✅ All systems normal — No tickets currently require human intervention.</div>`;
+        return;
+      }
+
+      tbody.innerHTML = escalations.map(t => `
+        <tr>
+          <td><strong class="text-primary">#${t.ticket_id}</strong></td>
+          <td><span class="badge bg-light text-dark border">${t.category || '—'}</span></td>
+          <td>
+            <span class="badge ${t.priority === 'Critical' ? 'sev-critical' : t.priority === 'High' ? 'sev-high' : 'sev-medium'}">
+              ${t.priority || 'Medium'}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <span style="font-weight:700; font-size:0.85rem;">
+                ${t.ai_confidence_score !== null && t.ai_confidence_score !== undefined ? (t.ai_confidence_score * 100).toFixed(0) + '%' : (t.confidence ? t.confidence.toFixed(0) + '%' : '—')}
+              </span>
+            </div>
+          </td>
+          <td><span class="text-danger" style="font-size:0.83rem; font-weight:600;">${t.escalation_reason || 'Manual Review Required'}</span></td>
+          <td>
+            <span class="badge ${t.customer_requested_human ? 'bg-warning text-dark' : 'bg-light text-muted border'}">
+              ${t.customer_requested_human ? 'Yes' : 'No'}
+            </span>
+          </td>
+          <td><span class="badge sev-critical">ESCALATED</span></td>
+        </tr>
+      `).join('');
+
+      if (alertsContainer) {
+        alertsContainer.innerHTML = escalations.slice(0, 3).map(t => `
+          <div class="alert alert-danger d-flex align-items-center justify-content-between mb-2 rounded-3 border-0" style="background:#fee2e2; color:#991b1b;">
+            <div>
+              <strong>Ticket #${t.ticket_id} [${t.category}]:</strong> ${t.escalation_reason}
+            </div>
+            <button class="btn btn-sm btn-danger rounded-pill px-3" onclick="openTicketAnalysis('${t.ticket_id}')">Inspect &amp; Resolve</button>
+          </div>
+        `).join('');
+      }
+    }
+  </script>
+</body>
+</html>
